@@ -25,4 +25,14 @@ class BankTransferTest {
         assertEquals(new BigDecimal("60.00"), bank.find("A1").getBalance());
         assertEquals(new BigDecimal("40.00"), bank.find("A2").getBalance());
     }
+
+    @Test
+    void cannotCreateDuplicateAccount() {
+        Bank fresh = new Bank();
+        fresh.createAccount("D1", "Owner", new BigDecimal("10.00"));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> fresh.createAccount("D1", "Other", new BigDecimal("5.00")),
+                "Creating two accounts with the same ID should not be allowed");
+    }
 }
